@@ -1,3 +1,6 @@
+//Belly Button Biodiversity Dashboard
+document.body.style.backgroundColor = 'white';
+
 // Store constant URL variable 
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
@@ -71,7 +74,107 @@ function buildMetadata(sample) {
     });
 };
 
-// Function to build Bar Chart
+// Function to build BarChart
 function buildBarChart(sample) {
     // Use D3 to retrieve all of data
     d3.json(url).then((data) => {
+
+        // Set variables for data
+        let samplesInfo = data.samples;
+        let value = samplesInfo.filter(result => result.id == sample);
+        let valueData = value[0];
+        let otu_ids = valueData.otu_ids;
+        let otu_labels = valueData.otu_labels;
+        let sample_values = valueData.sample_values;
+
+        // Log data to console
+        console.log(otu_ids, otu_labels, sample_values);
+
+        // Set top ten items to display in descending order 
+        let yticks = otu_ids.slice(0, 10).map(id => `OTU ${id}`).reverse();
+        let xticks = sample_values.slice(0, 10).reverse();
+        let labels = otu_labels.slice(0, 10).reverse();
+
+        // Set up trace for BarChart
+        let trace = {
+            x: xticks,
+            y: yticks,
+            text: labels,
+            type: "bar",
+            orientation: "h"
+        };
+
+        // Setup layout
+        let layout = {
+            title: "Top 10 OTUs Found",
+            xaxis: {
+                title: "Sample Values"
+            },
+            yaxis: {
+                title: "OTU IDs"
+            }
+        };
+
+        // Call Plotly to plot BarChart
+        Plotly.newPlot("bar", [trace], layout);
+    });
+};
+
+// Function to build BubbleChart
+function buildBubbleChart(sample) {
+    // Use D3 to retrieve all of data
+    d3.json(url).then((data) => {
+        // Set variables for data
+        let samplesInfo = data.samples;
+        let value = samplesInfo.filter(result => result.id == sample);
+        let valueData = value[0];
+        let otu_ids = valueData.otu_ids;
+        let otu_labels = valueData.otu_labels;
+        let sample_values = valueData.sample_values;
+
+        // Log data to console
+        console.log(otu_ids, otu_labels, sample_values);
+
+        // Set up trace for BubbleChart
+        let trace = {
+            x: otu_ids,
+            y: sample_values,
+            mode: "markers",
+            marker: {
+                size: sample_values,
+                color: otu_ids,
+                colorscale: "Earth"
+            },
+            text: otu_labels
+        };
+
+        // Setup layout
+        let layout = {
+            title: "Bacteria per Sample",
+            hovermode: "closest",
+            xaxis: {
+                title: "OTU IDs"
+            },
+            yaxis: {
+                title: "Sample Values"
+            }
+        };
+
+        // Call Plotly to plot BubbleChart
+        Plotly.newPlot("bubble", [trace1], layout);
+    });
+};
+
+// Function update dashboard when sample changes
+function optionChanged(value) {
+    console.log(value);
+
+    // Call all functions
+    buildMetadata(value);
+    buildBarChart(value);
+    buildBubbleChart(value);
+    buildGaugeChart(value);
+};
+
+// Call initialize function 
+init();
