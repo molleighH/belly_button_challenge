@@ -26,13 +26,9 @@ function init() {
         let names = data.names;
 
         // Add samples to dropdownMenu
-        names.forEach(id) => {
-            
-            // Log value of id for each iteration of loop
+        names.forEach((id) => {
             console.log(id);
-
             dropdownMenu.append("option").text(id).property("value", id);
-        });
 
         // Set first entry from data list
         let firstEntry = names[0];
@@ -45,7 +41,7 @@ function init() {
         buildBarChart(firstEntry);
         buildBubbleChart(firstEntry);
     });
-};
+});
 
 // Function to populate Metadata 
 function buildMetadata(sample) {
@@ -178,3 +174,4 @@ function optionChanged(value) {
 
 // Call initialize function 
 init();
+}
