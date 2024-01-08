@@ -4,10 +4,6 @@ document.body.style.backgroundColor = 'white';
 // Store constant URL variable 
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
-// Console log promise for debug purposes
-const dataPromise = d3.json(url)
-console.log("Data Promise: ", dataPromise)
-
 // Fetch JSON data and Console log it
 d3.json(url).then(function(data) {
     console.log(data);
